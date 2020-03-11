@@ -1,5 +1,6 @@
 import React from "react";
 //functional component
+//just to test commit
 const search = props => {
   return (
     <div className="container">
