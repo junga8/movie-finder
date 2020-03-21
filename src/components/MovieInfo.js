@@ -32,7 +32,13 @@ const MovieInfo = props => {
         <div className="col s12 m8">
           <div className="info-container">
             <p>{props.currentMovie.title}</p>
-            <p>{props.currentMovie.release_date}</p>
+            <p>
+              {props.currentMovie.release_date
+                .substring(5)
+                .split("-")
+                .concat(props.currentMovie.release_date.substring(0, 4))
+                .join("/")}
+            </p>
             <p>{props.currentMovie.overview}</p>
             <p>{props.currentMovie.vote_average}</p>
           </div>

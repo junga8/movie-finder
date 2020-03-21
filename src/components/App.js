@@ -88,7 +88,7 @@ class App extends Component {
           />
         )}
 
-        {this.state.totalResults > 20 ? (
+        {this.state.totalResults > 20 && this.state.currentMovie == null ? (
           <Pagination
             pages={numberPages}
             nextPage={this.nextPage}
