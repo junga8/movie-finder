@@ -12,9 +12,7 @@ class App extends Component {
       searchTerm: "",
       totalResults: 0,
       currentPage: 1,
-      currentMovie: null 
-
-      
+      currentMovie: null
     };
     this.apiKey = process.env.REACT_APP_API;
   }
@@ -23,13 +21,16 @@ class App extends Component {
     this.setState({ searchTerm: e.target.value });
   };
 
-  viewMovieInfo = (id) => {
-    const filteredMovie = this.state.movies.filter(movie => movie.id == id )
-    const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null
+  viewMovieInfo = id => {
+    const filteredMovie = this.state.movies.filter(movie => movie.id == id);
+    const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null;
 
-    this.setState({currentMovie : filteredMovie})
-    
-  }
+    this.setState({ currentMovie: filteredMovie });
+  };
+
+  closMovieinfo = () => {
+    this.setState({ currentMovie: null });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -48,8 +49,6 @@ class App extends Component {
       });
   };
 
- 
-
   //release_date
   //console.log(data.results[0].release_date);
 
@@ -65,9 +64,7 @@ class App extends Component {
   };
 
   render() {
-    const sortedMovies = this.state.movies.sort((a, b) => {
-    
-    });
+    const sortedMovies = this.state.movies.sort((a, b) => {});
     const numberPages = Math.floor(this.state.totalResults / 20);
     return (
       <div className="App">
@@ -75,7 +72,6 @@ class App extends Component {
         <Search
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
-        
         />
         <MovieList movies={sortedMovies} />
         {this.state.totalResults > 20 ? (
