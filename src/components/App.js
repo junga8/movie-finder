@@ -69,11 +69,22 @@ class App extends Component {
     return (
       <div className="App">
         <Nav />
-        <Search
-          handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit}
-        />
-        <MovieList movies={sortedMovies} />
+        {this.state.currentMovie == null ? (
+          <div>
+            {" "}
+            <Search
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+            />{" "}
+            <MovieList
+              viewMovieInfo={this.viewMovieInfo}
+              movies={sortedMovies}
+            />
+          </div>
+        ) : (
+          <MovieInfo closMovieinfo={this.closMovieinfo} />
+        )}
+
         {this.state.totalResults > 20 ? (
           <Pagination
             pages={numberPages}
