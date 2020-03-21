@@ -34,6 +34,7 @@ const MovieInfo = props => {
             <p>{props.currentMovie.title}</p>
             <p>{props.currentMovie.release_date}</p>
             <p>{props.currentMovie.overview}</p>
+            <p>{props.currentMovie.vote_average}</p>
           </div>
         </div>
       </div>
