@@ -27,6 +27,8 @@ class App extends Component {
     const filteredMovie = this.state.movies.filter(movie => movie.id == id )
     const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null
 
+    this.setState({currentMovie : filteredMovie})
+    
   }
 
   handleSubmit = e => {
