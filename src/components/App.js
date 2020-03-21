@@ -3,6 +3,7 @@ import Nav from "./navbar";
 import Search from "./search";
 import MovieList from "./movieList";
 import Pagination from "./Pagination";
+import MovieInfo from "./MovieInfo";
 
 class App extends Component {
   constructor() {
@@ -25,7 +26,7 @@ class App extends Component {
     const filteredMovie = this.state.movies.filter(movie => movie.id == id);
     const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null;
 
-    this.setState({ currentMovie: filteredMovie });
+    this.setState({ currentMovie: newCurrentMovie });
   };
 
   closMovieinfo = () => {
@@ -82,7 +83,10 @@ class App extends Component {
             />
           </div>
         ) : (
-          <MovieInfo closMovieinfo={this.closMovieinfo} />
+          <MovieInfo
+            currentMovie={this.state.currentMovie}
+            closMovieinfo={this.closMovieinfo}
+          />
         )}
 
         {this.state.totalResults > 20 ? (
