@@ -65,7 +65,6 @@ class App extends Component {
   };
 
   render() {
-    const sortedMovies = this.state.movies.sort((a, b) => {});
     const numberPages = Math.floor(this.state.totalResults / 20);
     return (
       <div className="App">
@@ -79,7 +78,7 @@ class App extends Component {
             />{" "}
             <MovieList
               viewMovieInfo={this.viewMovieInfo}
-              movies={sortedMovies}
+              movies={this.state.movies}
             />
           </div>
         ) : (

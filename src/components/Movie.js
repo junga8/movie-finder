@@ -22,7 +22,7 @@ const Movie = props => {
           </div>
           <div className="card-content">
             <p>
-              <a href="#" onClick={() => props.viewMovieInfo(props.MovieId)}>
+              <a href="#" onClick={() => props.viewMovieInfo(props.movieId)}>
                 {" "}
                 View Detail{" "}
               </a>

@@ -18,24 +18,23 @@ const MovieInfo = props => {
               src={
                 "https://11luuvtufne6f2y33i1nvedi-wpengine.netdna-ssl.com/wp-content/uploads/2017/10/no-image-icon.png"
               }
-              alt="Card image"
+              alt="card image"
               style={{ wifth: "100%", height: 360 }}
             />
           ) : (
             <img
               src={`http://image.tmdb.org/t/p/w185${props.currentMovie.poster_path}`}
-              alt="Card image"
+              alt="card image"
               style={{ wifth: "100%", height: 360 }}
             />
           )}
         </div>
-      </div>
-
-      <div className="col s12 m8">
-        <div className="info-Container">
-          <p>{props.currentMovie.title}</p>
-          <p>{props.currentMovie.release_date}</p>
-          <p>{props.currentMovie.overview}</p>
+        <div className="col s12 m8">
+          <div className="info-container">
+            <p>{props.currentMovie.title}</p>
+            <p>{props.currentMovie.release_date}</p>
+            <p>{props.currentMovie.overview}</p>
+          </div>
         </div>
       </div>
     </div>
