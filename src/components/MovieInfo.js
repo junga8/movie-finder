@@ -1,4 +1,6 @@
 import React from "react";
+import counterpart from "counterpart";
+import Translate from "react-translate-component";
 
 const MovieInfo = props => {
   return (
@@ -30,8 +32,22 @@ const MovieInfo = props => {
           )}
         </div>
         <div className="col s12 m8">
+          <select
+            className="waves-effect waves-light btn"
+            style={{ display: "inline" }}
+            onChange={props.handleSort}
+          >
+            <option value="" disabled selected>
+              Select Language
+            </option>
+
+            <option value="English">English</option>
+            <option value="German">German</option>
+            <option value="French">French</option>
+          </select>
           <div className="info-container">
             <p>{props.currentMovie.title}</p>
+
             <p>
               {props.currentMovie.release_date
                 .substring(5)
