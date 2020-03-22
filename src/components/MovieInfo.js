@@ -35,7 +35,7 @@ const MovieInfo = props => {
           <select
             className="waves-effect waves-light btn"
             style={{ display: "inline" }}
-            onChange={props.handleSort}
+            //onChange={props.handleSort}
           >
             <option value="" disabled selected>
               Select Language
