@@ -1,6 +1,6 @@
 import React from "react";
 //functional component
-//just to test commit
+//just to test commit here
 const search = props => {
   return (
     <div className="container">
@@ -14,9 +14,9 @@ const search = props => {
                 onChange={props.handleChange}
               />
             </div>
-               <div style={{ float: "left" }}>
-               <button className="waves-effect waves-light btn">Search</button>
-              </div>
+            <div style={{ float: "left" }}>
+              <button className="waves-effect waves-light btn">Search</button>
+            </div>
           </form>
         </section>
       </div>
