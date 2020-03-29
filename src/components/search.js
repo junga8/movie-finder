@@ -14,23 +14,6 @@ const search = props => {
                 onChange={props.handleChange}
               />
             </div>
-            <div style={{ float: "left" }}>
-              <button className="waves-effect waves-light btn">Search</button>
-            </div>
-            <div style={{ float: "right" }}>
-              <select
-                className="waves-effect waves-light btn"
-                style={{ display: "block" }}
-                onChange={props.handleSort}
-              >
-                <option value="" disabled selected>
-                  Sort
-                </option>
-
-                <option value="Newest">Newest</option>
-                <option value="Oldest">Oldest</option>
-              </select>
-            </div>
           </form>
         </section>
       </div>
