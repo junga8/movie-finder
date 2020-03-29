@@ -14,6 +14,9 @@ const search = props => {
                 onChange={props.handleChange}
               />
             </div>
+               <div style={{ float: "left" }}>
+               <button className="waves-effect waves-light btn">Search</button>
+              </div>
           </form>
         </section>
       </div>
