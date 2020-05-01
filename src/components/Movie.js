@@ -23,12 +23,13 @@ const Movie = (props) => {
             )}
           </div>
           <div className="card-content">
-            <p>
-              <a href="#" onClick={() => props.viewMovieInfo(props.movieId)}>
-                {" "}
-                View Detail{" "}
-              </a>
-            </p>
+            <button
+              className="waves-effect waves-light btn"
+              onClick={() => props.viewMovieInfo(props.movieId)}
+            >
+              {" "}
+              View Detail{" "}
+            </button>
           </div>
         </div>
       </div>
