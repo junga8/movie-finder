@@ -1,7 +1,7 @@
 import React from "react";
 import Movie from "./Movie";
 
-const movieList = props => {
+const movieList = (props) => {
   return (
     <div className="conatiner">
       <div className="row">
