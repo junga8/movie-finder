@@ -7,7 +7,7 @@ const Nav = () => {
   return (
     <nav>
       <div className="nav-wrapper container">
-        <a href="/search" className="brand-logo">
+        <a href="https://epic-morse-aea7b0.netlify.app" className="brand-logo">
           Movie Finder
         </a>
       </div>
