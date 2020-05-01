@@ -13,17 +13,17 @@ class App extends Component {
       searchTerm: "",
       totalResults: 0,
       currentPage: 1,
-      currentMovie: null
+      currentMovie: null,
     };
     this.apiKey = process.env.REACT_APP_API;
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ searchTerm: e.target.value });
   };
 
-  viewMovieInfo = id => {
-    const filteredMovie = this.state.movies.filter(movie => movie.id == id);
+  viewMovieInfo = (id) => {
+    const filteredMovie = this.state.movies.filter((movie) => movie.id == id);
     const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null;
 
     this.setState({ currentMovie: newCurrentMovie });
@@ -33,19 +33,19 @@ class App extends Component {
     this.setState({ currentMovie: null });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     fetch(
       "https://api.themoviedb.org/3/search/movie?api_key=34f71ed9b57295361e5081c91ba416d7&query=" +
         this.state.searchTerm
     )
-      .then(data => data.json())
-      .then(data => {
+      .then((data) => data.json())
+      .then((data) => {
         console.log(data);
         this.setState({
           movies: [...data.results],
 
-          totalResults: data.total_results
+          totalResults: data.total_results,
         });
       });
   };
@@ -53,12 +53,12 @@ class App extends Component {
   //release_date
   //console.log(data.results[0].release_date);
 
-  nextPage = pageNumber => {
+  nextPage = (pageNumber) => {
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=34f71ed9b57295361e5081c91ba416d7&query=${this.state.searchTerm}&page=${pageNumber}`
     )
-      .then(data => data.json())
-      .then(data => {
+      .then((data) => data.json())
+      .then((data) => {
         console.log(data);
         this.setState({ movies: [...data.results], currentPage: pageNumber });
       });

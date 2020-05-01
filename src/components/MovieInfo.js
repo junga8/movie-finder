@@ -1,8 +1,12 @@
 import React from "react";
 import counterpart from "counterpart";
 import Translate from "react-translate-component";
+import { Rating } from "@material-ui/lab";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import { Cell } from "react-mdl";
 
-const MovieInfo = props => {
+const MovieInfo = (props) => {
   return (
     <div className="container">
       <div
@@ -46,17 +50,33 @@ const MovieInfo = props => {
             <option value="French">French</option>
           </select>
           <div className="info-container">
-            <p>{props.currentMovie.title}</p>
+            <h5>
+              {" "}
+              <em>{props.currentMovie.title}</em>
+            </h5>
+            <p>
+              <em>
+                {props.currentMovie.release_date
+                  .substring(5)
+                  .split("-")
+                  .concat(props.currentMovie.release_date.substring(0, 4))
+                  .join("/")}
+              </em>
+            </p>
 
             <p>
-              {props.currentMovie.release_date
-                .substring(5)
-                .split("-")
-                .concat(props.currentMovie.release_date.substring(0, 4))
-                .join("/")}
+              <em>{props.currentMovie.overview}</em>
             </p>
-            <p>{props.currentMovie.overview}</p>
-            <p>{props.currentMovie.vote_average}</p>
+
+            <Box component="fieldset" mb={3} borderColor="transparent">
+              <Typography component="legend"></Typography>
+              <Rating
+                name="customized-10"
+                defaultValue={props.currentMovie.vote_average}
+                readOnly
+                max={10}
+              />
+            </Box>
           </div>
         </div>
       </div>
