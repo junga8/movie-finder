@@ -1,17 +1,19 @@
-import React, { Component } from "react";
-import Search from "./search";
-import { Link, Router, Switch, Route } from "react-router-dom";
-import search from "./search";
+import React from 'react';
+import { AppBar, Toolbar, Typography, Container } from '@mui/material';
+import MovieIcon from '@mui/icons-material/Movie';
 
 const Nav = () => {
   return (
-    <nav>
-      <div className="nav-wrapper container">
-        <a href="https://epic-morse-aea7b0.netlify.app" className="brand-logo">
-          Movie Finder
-        </a>
-      </div>
-    </nav>
+    <AppBar position="static" sx={{ backgroundColor: '#e57373' }}>
+      <Container>
+        <Toolbar sx={{ justifyContent: 'center' }}>
+          <MovieIcon sx={{ mr: 2 }} />
+          <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+            Movie Finder
+          </Typography>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 

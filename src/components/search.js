@@ -1,27 +1,39 @@
-import React from "react";
-//functional component
-//just to test commit here
-const search = (props) => {
+import React from 'react';
+import { Paper, InputBase, IconButton, Box } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+
+const Search = ({ handleSubmit, handleChange }) => {
   return (
-    <div className="container">
-      <div className="row">
-        <section className="col s4 offser-s4">
-          <form action="" onSubmit={props.handleSubmit}>
-            <div className="input-field">
-              <input
-                type="text"
-                placeholder="Search Movie"
-                onChange={props.handleChange}
-              />
-            </div>
-            <div style={{ float: "left" }}>
-              <button className="waves-effect waves-light btn">Search</button>
-            </div>
-          </form>
-        </section>
-      </div>
-    </div>
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'center',
+      mt: 3,
+      mb: 3 
+    }}>
+      <Paper
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          maxWidth: 600,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}
+      >
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search for movies..."
+          onChange={handleChange}
+          inputProps={{ 'aria-label': 'search movies' }}
+        />
+        <IconButton type="submit" sx={{ p: '10px', color: 'primary.main' }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Box>
   );
 };
 
-export default search;
+export default Search;

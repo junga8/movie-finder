@@ -1,86 +1,138 @@
-import React from "react";
-import counterpart from "counterpart";
-import Translate from "react-translate-component";
-import { Rating } from "@material-ui/lab";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import { Cell } from "react-mdl";
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, Paper, IconButton, Grid, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material';
+import { Rating } from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { translateText } from '../utils/translate';
 
-const MovieInfo = (props) => {
+const MovieInfo = ({ currentMovie, closeMovieInfo }) => {
+  const [language, setLanguage] = useState('English');
+  const [translatedTitle, setTranslatedTitle] = useState(currentMovie.title);
+  const [translatedOverview, setTranslatedOverview] = useState(currentMovie.overview);
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    const translateContent = async () => {
+      if (language === 'English') {
+        setTranslatedTitle(currentMovie.title);
+        setTranslatedOverview(currentMovie.overview);
+        return;
+      }
+
+      setIsTranslating(true);
+      try {
+        const [newTitle, newOverview] = await Promise.all([
+          translateText(currentMovie.title, language),
+          translateText(currentMovie.overview, language)
+        ]);
+        setTranslatedTitle(newTitle);
+        setTranslatedOverview(newOverview);
+      } catch (error) {
+        console.error('Translation error:', error);
+      } finally {
+        setIsTranslating(false);
+      }
+    };
+
+    translateContent();
+  }, [language, currentMovie]);
+
+  const handleLanguageChange = (event) => {
+    setLanguage(event.target.value);
+  };
+
   return (
-    <div className="container">
-      <div
-        className="row"
-        onClick={props.closMovieinfo}
-        style={{ cursor: "pointer", paddingTop: 50 }}
-      >
-        <i className="fas fa-arrow-left"></i>
-        <span style={{ margineLeft: 10 }}> Go Back</span>
-      </div>
-      <div className="row">
-        <div className="col s12 m4">
-          {props.currentMovie.poster_path == null ? (
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Box sx={{ mb: 4 }}>
+        <IconButton 
+          onClick={closeMovieInfo}
+          sx={{ 
+            color: 'primary.main',
+            '&:hover': {
+              backgroundColor: 'rgba(229, 115, 115, 0.1)'
+            }
+          }}
+        >
+          <ChevronLeftIcon />
+          <Typography sx={{ ml: 1 }}>Go Back</Typography>
+        </IconButton>
+      </Box>
+
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={4}>
             <img
               src={
-                "https://11luuvtufne6f2y33i1nvedi-wpengine.netdna-ssl.com/wp-content/uploads/2017/10/no-image-icon.png"
+                currentMovie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`
+                  : "https://via.placeholder.com/500x750.png?text=No+Poster+Available"
               }
-              alt="card image"
-              style={{ wifth: "100%", height: 360 }}
+              alt={`Poster for ${currentMovie.title}`}
+              style={{ width: '100%', borderRadius: '8px' }}
             />
-          ) : (
-            <img
-              src={`http://image.tmdb.org/t/p/w185${props.currentMovie.poster_path}`}
-              alt="card image"
-              style={{ wifth: "100%", height: 360 }}
-            />
-          )}
-        </div>
-        <div className="col s12 m8">
-          <select
-            className="waves-effect waves-light btn"
-            style={{ display: "inline" }}
-            //onChange={props.handleSort}
-          >
-            <option value="" disabled selected>
-              Select Language
-            </option>
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="language-select-label">Language</InputLabel>
+              <Select
+                labelId="language-select-label"
+                id="language-select"
+                value={language}
+                label="Language"
+                onChange={handleLanguageChange}
+                disabled={isTranslating}
+              >
+                <MenuItem value="English">English</MenuItem>
+                <MenuItem value="German">German</MenuItem>
+                <MenuItem value="French">French</MenuItem>
+                <MenuItem value="Nepali">Nepali</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            {isTranslating ? (
+              <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+                <CircularProgress color="primary" />
+              </Box>
+            ) : (
+              <>
+                <Typography variant="h4" component="h1" gutterBottom color="primary">
+                  {translatedTitle}
+                </Typography>
+                
+                <Typography variant="h6" gutterBottom color="text.secondary">
+                  Release Date: {new Date(currentMovie.release_date).toLocaleDateString()}
+                </Typography>
 
-            <option value="English">English</option>
-            <option value="German">German</option>
-            <option value="French">French</option>
-          </select>
-          <div className="info-container">
-            <h5>
-              {" "}
-              <em>{props.currentMovie.title}</em>
-            </h5>
-            <p>
-              <em>
-                {props.currentMovie.release_date
-                  .substring(5)
-                  .split("-")
-                  .concat(props.currentMovie.release_date.substring(0, 4))
-                  .join("/")}
-              </em>
-            </p>
+                <Box sx={{ my: 2 }}>
+                  <Typography variant="body1" paragraph>
+                    {translatedOverview}
+                  </Typography>
+                </Box>
 
-            <p>
-              <em>{props.currentMovie.overview}</em>
-            </p>
+                <Box sx={{ mt: 3 }}>
+                  <Typography component="legend" variant="h6" gutterBottom>
+                    Rating
+                  </Typography>
+                  <Rating
+                    value={currentMovie.vote_average / 2}
+                    precision={0.5}
+                    readOnly
+                    size="large"
+                  />
+                  <Typography variant="body1" sx={{ mt: 1 }}>
+                    {currentMovie.vote_average.toFixed(1)}/10
+                  </Typography>
+                </Box>
 
-            <Box component="fieldset" mb={3} borderColor="transparent">
-              <Typography component="legend"></Typography>
-              <Rating
-                name="customized-10"
-                defaultValue={props.currentMovie.vote_average}
-                readOnly
-                max={10}
-              />
-            </Box>
-          </div>
-        </div>
-      </div>
-    </div>
+                {currentMovie.vote_count && (
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                    Based on {currentMovie.vote_count.toLocaleString()} votes
+                  </Typography>
+                )}
+              </>
+            )}
+          </Grid>
+        </Grid>
+      </Paper>
+    </Container>
   );
 };
 

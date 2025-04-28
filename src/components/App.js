@@ -1,104 +1,74 @@
-import React, { Component } from "react";
-import Nav from "./navbar";
-import Search from "./search";
-import MovieList from "./movieList";
-import Pagination from "./Pagination";
-import MovieInfo from "./MovieInfo";
+import React, { useState } from 'react';
+import Nav from './navbar';
+import Search from './search';
+import TopMovies from './TopMovies';
+import MovieList from './movieList';
+import MovieInfo from './MovieInfo';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { Container } from '@mui/material';
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: [],
-      searchTerm: "",
-      totalResults: 0,
-      currentPage: 1,
-      currentMovie: null,
-    };
-    this.apiKey = process.env.REACT_APP_API;
-  }
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#e57373', // Light red to match the header
+    },
+    secondary: {
+      main: '#2196f3',
+    },
+  },
+});
 
-  handleChange = (e) => {
-    this.setState({ searchTerm: e.target.value });
+function App() {
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentMovie, setCurrentMovie] = useState(null);
+  const API_KEY = '34f71ed9b57295361e5081c91ba416d7';
+
+  const handleChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  viewMovieInfo = (id) => {
-    const filteredMovie = this.state.movies.filter((movie) => movie.id == id);
-    const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null;
-
-    this.setState({ currentMovie: newCurrentMovie });
-  };
-
-  closMovieinfo = () => {
-    this.setState({ currentMovie: null });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(
-      "https://api.themoviedb.org/3/search/movie?api_key=34f71ed9b57295361e5081c91ba416d7&query=" +
-        this.state.searchTerm
-    )
-      .then((data) => data.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({
-          movies: [...data.results],
-
-          totalResults: data.total_results,
-        });
-      });
+    if (searchTerm) {
+      fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchTerm}`
+      )
+        .then((data) => data.json())
+        .then((data) => {
+          setSearchResults(data.results);
+        })
+        .catch((error) => console.error('Error searching movies:', error));
+    }
   };
 
-  //release_date
-  //console.log(data.results[0].release_date);
-
-  nextPage = (pageNumber) => {
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=34f71ed9b57295361e5081c91ba416d7&query=${this.state.searchTerm}&page=${pageNumber}`
-    )
-      .then((data) => data.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({ movies: [...data.results], currentPage: pageNumber });
-      });
+  const viewMovieInfo = (movie) => {
+    setCurrentMovie(movie);
   };
 
-  render() {
-    const numberPages = Math.floor(this.state.totalResults / 20);
-    return (
+  const closeMovieInfo = () => {
+    setCurrentMovie(null);
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
       <div className="App">
         <Nav />
-        {this.state.currentMovie == null ? (
-          <div>
-            {" "}
-            <Search
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-            />{" "}
-            <MovieList
-              viewMovieInfo={this.viewMovieInfo}
-              movies={this.state.movies}
-            />
-          </div>
-        ) : (
-          <MovieInfo
-            currentMovie={this.state.currentMovie}
-            closMovieinfo={this.closMovieinfo}
-          />
-        )}
-
-        {this.state.totalResults > 20 && this.state.currentMovie == null ? (
-          <Pagination
-            pages={numberPages}
-            nextPage={this.nextPage}
-            currentPage={this.state.currentPage}
-          />
-        ) : (
-          ""
-        )}
+        <Container>
+          {!currentMovie && (
+            <Search handleChange={handleChange} handleSubmit={handleSubmit} />
+          )}
+          {currentMovie ? (
+            <MovieInfo currentMovie={currentMovie} closeMovieInfo={closeMovieInfo} />
+          ) : searchResults.length > 0 ? (
+            <MovieList movies={searchResults} viewMovieInfo={viewMovieInfo} />
+          ) : (
+            <TopMovies onMovieClick={viewMovieInfo} />
+          )}
+        </Container>
       </div>
-    );
-  }
+    </ThemeProvider>
+  );
 }
+
 export default App;
